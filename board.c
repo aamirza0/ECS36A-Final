@@ -5,9 +5,8 @@
 #include <stdbool.h>
 #include <math.h>
 
-// This file is gonna hold all of the board-based functions; responsible for printing and such
+//This is gonna hold all of the board-based functions; it'll be responsible for printing and such
 
-// Define a board and associated members
 typedef struct Board_struct
 {
     int numRows;
@@ -15,7 +14,7 @@ typedef struct Board_struct
     char **canvas;
 } BoardStruct;
 
-// This function initializes a Board struct and returns it. 
+// This function initializes a Board struct and uses the 
 BoardStruct makeBoard(int numRows, int numCols)
 {
     BoardStruct newBoard;
@@ -38,11 +37,10 @@ void setupBoard(BoardStruct inputBoard)
     {
         for (int cols = 0; cols < numCols; ++cols)
         {
-            double currVal;
             inputBoard.canvas[rows][cols] = '*';
         }
     }
-		inputBoard.canvas[0][0] = 'A';
+	inputBoard.canvas[0][0] = 'A';
 }
 
 // This function should take care of printing out the matrix contained within the board struct. 
@@ -51,9 +49,9 @@ void printBoard(BoardStruct inputBoard)
 	int rowDimension = inputBoard.numRows;
 	int colDimension = inputBoard.numCols;
 
-  for (int row = rowDimension; row > 0; row++)
+  for (int row = rowDimension-1; row >= 0; row--)
   {
-		printf("%d ", rowDimension - (row));
+		printf("%d ", row);
     for (int col = 0; col < colDimension; col++)
     {
       printf("%c ", inputBoard.canvas[row][col]);
@@ -61,9 +59,9 @@ void printBoard(BoardStruct inputBoard)
     printf("\n");
   }
   printf("  ");
-	for (int i = 0; i < colDimension; i++)
+	for (int i = colDimension; i > 0; i--)
 	{
-		printf("%d ", i);
+		printf("%d ", colDimension- i);
 	}
   printf("\n");
 }

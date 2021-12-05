@@ -8,11 +8,11 @@
 
 
 int main(int argc, char **argv) {
-	// Take in the input from the command line and assign it to the variables for the canvas' dimensions, if valid. 
+	// Take in the input from the command line and assign it to the variables for the canvas' dimensions
 	int numRows = 0;
 	int numCols = 0;
-	int isInputValid = commLineInputValidation(argv, argc, &numRows, &numCols);
-	if(isInputValid){
+	bool inputValid = commLineInputValidation(argv, argc, &numRows, &numCols);
+	if(inputValid){
 		numRows = atoi(argv[1]);
 		numCols = atoi(argv[2]);
 	}

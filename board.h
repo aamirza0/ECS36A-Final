@@ -6,7 +6,7 @@
 {
   int numRows; 
   int numCols;
-  double **canvas;
+  char **canvas;
 } BoardStruct;
 	BoardStruct makeBoard(int numRows, int numCols);
 	void setupBoard(BoardStruct inputBoard);
