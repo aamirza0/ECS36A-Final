@@ -136,12 +136,54 @@ void bottomRightWriter(BoardStruct currBoard, int startRow, int startCol, int en
 	}
 }
 
-void verticalWriter(BoardStruct currBoard, int startRow, int endRow, int colPosition)
+void rightWriter(BoardStruct currBoard, int startCol, int endCol, int rowPosition)
+{
+	int currColIndex = startCol;
+	int endColIndex = endCol;
+	while (currColIndex <= endColIndex)
+	{
+		if (currBoard.canvas[rowPosition][currColIndex] != '-')
+		{
+			if (currBoard.canvas[rowPosition][currColIndex] != '*')
+			{
+				currBoard.canvas[rowPosition][currColIndex] = '+';
+			}
+			else
+			{
+				currBoard.canvas[rowPosition][currColIndex] = '-';
+			}
+		}
+			currColIndex++;
+	}
+}
+
+void leftWriter(BoardStruct currBoard, int startCol, int endCol, int rowPosition)
+{
+	int currColIndex = startCol;
+	int endColIndex = endCol;
+	while (currColIndex >= endColIndex)
+	{
+		if (currBoard.canvas[rowPosition][currColIndex] != '-')
+		{
+			if (currBoard.canvas[rowPosition][currColIndex] != '*')
+			{
+				currBoard.canvas[rowPosition][currColIndex] = '+';
+			}
+			else
+			{
+				currBoard.canvas[rowPosition][currColIndex] = '-';
+			}
+		}
+		currColIndex--;
+	}
+}
+
+void downWriter(BoardStruct currBoard, int startRow, int endRow, int colPosition)
 {
 	int currRowIndex = startRow;
 	int endRowIndex = endRow;
 	int colPos = colPosition;
-	while (currRowIndex != endRowIndex)
+	while (currRowIndex >= endRowIndex)
 	{
 		if (currBoard.canvas[currRowIndex][colPos] != '|')
 		{
@@ -154,79 +196,73 @@ void verticalWriter(BoardStruct currBoard, int startRow, int endRow, int colPosi
 				currBoard.canvas[currRowIndex][colPos] = '|';
 			}
 		}
-		if (endRowIndex > currRowIndex)
-		{
-			currRowIndex++;
-		}
-		else if (endRowIndex < currRowIndex)
-		{
 			currRowIndex--;
-		}
 	}
 }
 
-void horizontalWriter(BoardStruct currBoard, int startCol, int endCol, int rowPosition)
+void upWriter(BoardStruct currBoard, int startRow, int endRow, int colPosition)
 {
-	int currColIndex = startCol;
-	int endColIndex = endCol;
-	int rowPos = rowPosition;
-	while (currColIndex != endColIndex)
+	int currRowIndex = startRow;
+	int endRowIndex = endRow;
+	int colPos = colPosition;
+	while (currRowIndex <= endRowIndex)
 	{
-		if (currBoard.canvas[rowPos][currColIndex] != '-')
+		if (currBoard.canvas[currRowIndex][colPos] != '|')
 		{
-			if (currBoard.canvas[rowPos][currColIndex] != '*')
+			if (currBoard.canvas[currRowIndex][colPos] != '*')
 			{
-				currBoard.canvas[rowPos][currColIndex] = '+';
+				currBoard.canvas[currRowIndex][colPos] = '+';
 			}
 			else
 			{
-				currBoard.canvas[rowPos][currColIndex] = '-';
+				currBoard.canvas[currRowIndex][colPos] = '|';
 			}
 		}
-		if (currColIndex > endColIndex)
-		{
-			currColIndex--;
-		}
-		else if (currColIndex < endColIndex)
-		{
-			currColIndex++;
-		}
+		currRowIndex++;
 	}
 }
 
-void writeLine(BoardStruct currBoard, int startRow, int startColumn, int endRow, int endColumn)
+
+void writeLine(BoardStruct currBoard, int startRow, int startColumn, int endRow, int endCol)
 {
 	// Declare the necessary variables here: we need to start at the first two coordinates, and end at 1+ the last two.
-	int currRow = startRow;
-	int currCol = startColumn;
-	int endRowIndex = endRow + 1;
-	int endColIndex = endColumn + 1;
+	
 	// If the end coordinates are to the top right, we need to print a '/'
-	if (startRow < endRow && currCol < endColumn)
+	if (startRow < endRow && startColumn < endCol)
 	{
-		topRightWriter(currBoard, startRow, startColumn, endRow, endColumn);
+		topRightWriter(currBoard, startRow, startColumn, endRow, endCol);
 	}
-	// Otherwise, if the end coordinates are to the top right of the starting coordinates, print a '\'
-	else if (currRow < endRow && currCol > endColumn)
+// Otherwise, if the end coordinates are to the top left of the starting coordinates, print a '\'
+	else if (startRow < endRow && startColumn > endCol)
 	{
-		topLeftWriter(currBoard, startRow, startColumn, endRow, endColumn);
+		topLeftWriter(currBoard, startRow, startColumn, endRow, endCol);
 	}
-	// Now define what happens if the end coords are to the bottom left of the starting coordintes
-	else if (currRow > endRowIndex && currCol > endColIndex)
+// Now define what happens if the end coords are to the bottom left of the starting coordintes
+	else if (startRow > endRow && startColumn > endCol)
 	{
-		bottomLeftWriter(currBoard, startRow, startColumn, endRow, endColumn);
+		bottomLeftWriter(currBoard, startRow, startColumn, endRow, endCol);
 	}
 	//Define what happens if the end coords are to the top right of the start coords
-	else if (currRow > endRowIndex && currCol < endColIndex)
+	else if (startRow > endRow && startColumn < endCol)
 	{
-		bottomRightWriter(currBoard, startRow, startColumn, endRow, endColumn);
+		bottomRightWriter(currBoard, startRow, startColumn, endRow, endCol);
 	}
-	// What if the two coords are in the same column, but in different rows?
-	else if(currRow != endRowIndex && currCol == endColumn){
-		verticalWriter(currBoard, currRow, endRowIndex, endColumn);
+// 	// What if the two coords are in the same column, but in different rows?
+	else if(startRow != endRow && startColumn == endCol){
+		if(startRow < endRow){
+			upWriter(currBoard, startRow, endRow, endCol);
+		}
+		else{
+			downWriter(currBoard, startRow, endRow, endCol);
+		}
 	}
-	// What if the two coords are in the same row, but different columns?
-	else{
-		horizontalWriter(currBoard, currRow, endRowIndex, endColIndex);
-	}
+  // What if the two coords are in the same row, but different columns?
+	else if(startRow == endRow && startColumn != endCol){
+		if (startColumn < endCol){
+			rightWriter(currBoard, startColumn, endCol, endRow);
+		}
+		else{
+ 		leftWriter(currBoard, startColumn, endCol, endRow);
+		}
+ }
 }
